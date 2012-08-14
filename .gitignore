@@ -1,0 +1,11 @@
+.metadata/
+fastmat/.settings/
+fastmat/bin/
+fastmat/.classpath
+fastmat/.project
+fastmat/.pydevproject
+*.pyc
+
+
+
+
