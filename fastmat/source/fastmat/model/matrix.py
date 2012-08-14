@@ -92,4 +92,11 @@ class TiledMatrix(Matrix):
         Matrix.__init__(self, rows, columns)
         self.data = [[tile_factory.make_tile(i,j) \
                       for j in range(columns)] for i in range(rows)]
+    
+    def __str__(self):
+        tmp = "\n";
+        for (i,j) in self.indices:
+            tmp = tmp + "\n %s,%s = \n %s"%(i,j,self[(i,j)])
+        tmp = tmp + "\n"
+        return tmp
         

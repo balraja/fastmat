@@ -29,7 +29,7 @@ class PersistedArgument(object):
     def __init__(self, persistor, file_name):
         '''CTOR'''
         self._persistor = persistor
-        self._fie_name = file_name
+        self._file_name = file_name
     
     def load_arg(self):
         '''loads the argument from the file using persistor'''

@@ -41,6 +41,7 @@ def master(dag):
             try:
                 if len(completed_vertices) > 0:
                     vertex = top_gen.send(completed_vertices)
+                    completed_vertices[:] = []
                 else:
                     vertex = next(top_gen)
                 while vertex is not None and isinstance(vertex, SourceVertex):
@@ -56,7 +57,7 @@ def master(dag):
         
         if results_receiver in socks and socks[results_receiver] == zmq.POLLIN:
             vertex = results_receiver.recv_pyobj()
-            print "Completed processing the vertex "
+            print "Completed processing the vertex " +  vertex.vertex_id
             completed_vertices.append(vertex)
     
     notifications_publisher.send("FINISHED")
@@ -85,7 +86,8 @@ def worker(wrk_num):
         socks = dict(poller.poll())
         if work_receiver in socks and socks.get(work_receiver) == zmq.POLLIN:
             executable_vertex = work_receiver.recv_pyobj()
-            print "RECEIVED %s vertex for execution"%(executable_vertex.id())
+            print "RECEIVED %s vertex for execution"%(executable_vertex.vertex_id)
+            executable_vertex.executable.execute()
             results_sender.send_pyobj(executable_vertex)
 
         if control_receiver in socks and socks.get(control_receiver) == zmq.POLLIN:

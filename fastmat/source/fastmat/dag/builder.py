@@ -25,6 +25,16 @@ def tile_assignment(arg1, arg2):
     arg1.data = arg2.data
     return arg1;
 
+def unwrap_matrix(matrix):
+    "Unwraps the tiles and creates a matrix with the original tiles"
+    
+    wrapped_tiles = {}
+    for (i,j) in matrix.indices:
+        wrapped_tiles[(i,j)] = matrix[(i,j)].tile
+    result = TiledMatrix(matrix.rows, matrix.columns,\
+                        WrappedTileFactory(wrapped_tiles))
+    return result
+
 class Vertex(object):
     ''' Defines the basic abstraction of a vertex '''
     
@@ -160,8 +170,8 @@ class WrappedTile(object):
     
     @property
     def tile(self):
-        if isinstance(self._tyle, PersistedArgument):
-            self._tyle = self._tyle.load_arg()
+        if isinstance(self._tile, PersistedArgument):
+            self._tile = self._tile.load_arg()
         return self._tile
     
     @property
